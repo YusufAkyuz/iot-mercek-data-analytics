@@ -21,6 +21,7 @@ def extract_log_data(raw_segments):
         # logArr değerleri
         log_arr_matches = re.findall(r'"N"\s*:\s*"(\d+)"', cleaned)[1:]
         log_arr = [int(n) for n in log_arr_matches[:log_arr_size]]
+
         return log_arr, conn_state
     except Exception as e:
         print("Log parsing error:", e)
