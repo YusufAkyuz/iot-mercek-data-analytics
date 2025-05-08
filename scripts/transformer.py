@@ -21,7 +21,6 @@ def process_log(log_arr, config):
         info = meta["modelInfo"]
         indexes = info["index"]
         mapper = meta["mapperFunc"]
-        source_type = meta["sourceType"]
         values = [log_arr[i] for i in indexes]
         func = mapper_funcs.get(mapper)
         if func:

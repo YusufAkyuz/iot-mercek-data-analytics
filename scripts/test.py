@@ -21,7 +21,6 @@ def extract_log_data(raw_segments):
         # logArr değerleri
         log_arr_matches = re.findall(r'"N"\s*:\s*"(\d+)"', cleaned)[1:]
         log_arr = [int(n) for n in log_arr_matches[:log_arr_size]]
-
         return log_arr, conn_state
     except Exception as e:
         print("Log parsing error:", e)
@@ -50,8 +49,11 @@ def main():
                 appliance_id = parts[0]
                 lat = float(parts[1])
                 lon = float(parts[2])
-                ts = int(parts[3])
-
+                try:
+                    ts = int(parts[3])
+                except Exception as e:
+                    print(f"Timestamp conversion error: {parts[3]} is not a valid timestamp.")
+    
                 # Geri kalan parçalar log verisi bunları düzenlemek ve işlemek için extract_log_data fonksiyonu çağrılıyor.
                 log_arr, conn_state = extract_log_data(parts[4:])
 
