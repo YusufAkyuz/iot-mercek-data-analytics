@@ -1,5 +1,5 @@
 import pandas as pd
-from scripts.mappers import *
+from mappers import *
 
 mapper_funcs = {
     "getBitwiseEnum": get_bitwise_enum,
@@ -10,6 +10,8 @@ mapper_funcs = {
     "getEnumOrDefault": get_enum_or_default,
     "calcChildLock": calc_child_lock,
     "getAsMin": get_as_min,
+    "calcHighLow": calc_high_low,
+    "calcHeatTime": calc_heat_time,
 }
 
 

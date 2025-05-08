@@ -14,6 +14,3 @@ def load_config(config_path):
     else:
         print("File path not found:", config_path)
         return None
-
-config = load_config('./config/v1_10.json')
-print(config)
