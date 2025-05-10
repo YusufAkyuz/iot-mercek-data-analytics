@@ -42,19 +42,45 @@ def main():
         print("The configuration file was not found.")
         return
 
-    results = []
+    all_results = []
 
     with open(args.input, "r", encoding="utf-8") as f:
         for line in f:
-            parts = line.strip().split(";")
-            log_arr, conn_state = extract_log_data(parts)
-            parsed = process_log(log_arr, config)
-            parsed["connState"] = conn_state
-            results.append(parsed)
+            try:
+                parts = line.strip().split(";")
+                if len(parts) < 5:
+                    continue
 
-    df = pd.DataFrame(results)
-    df.to_csv(args.output, index=False)
-    print(f"Data has been written to {args.output}")
+                # ilk 4 parça appliance_id, lat, lon ve timestamp
+                appliance_id = parts[0]
+                lat = float(parts[1])
+                lon = float(parts[2])
+                try:
+                    ts = int(parts[3])
+                except Exception as e:
+                    print(f"Timestamp conversion error: {parts[3]} is not a valid timestamp.")
+    
+                # Geri kalan parçalar log verisi bunları düzenlemek ve işlemek için extract_log_data fonksiyonu çağrılıyor.
+                log_arr, conn_state = extract_log_data(parts[4:])
+
+                result = process_log(log_arr, config)
+                result.update({
+                    "ApplianceId": appliance_id,
+                    "Latitude": lat,
+                    "Longitude": lon,
+                    "Timestamp": ts,
+                    "ConnState": conn_state
+                })
+                all_results.append(result)
+            except Exception as e:
+                print(f"The row could not be processed: {e}")
+                continue
+
+    # Olusan çıktıları csv de kaydetme
+    df = pd.DataFrame(all_results)
+    df.to_csv(args.output, index=False, encoding="utf-8-sig")
+    print(f"{len(all_results)} record was successfully processed and saved to file '{args.output}'.")
+
 
 if __name__ == "__main__":
     main()
