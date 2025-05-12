@@ -10,6 +10,17 @@ from datetime import datetime, timezone
 logger = setup_logger()
 
 def extract_log_data(raw_segments):
+    """
+    Extracts logArr and connState from raw text segments.
+    Args:
+        raw_segments (list[str]): Split parts of a raw log line (e.g., ["F999963781...", "36.6244", ...]).
+    Returns:
+        tuple: (log_arr, conn_state) where:
+            - log_arr (list[int]): Valid logArr values up to logArrSize.
+            - conn_state (str): "online", "offline".
+    Raises:
+        ValueError: If logArrSize or logArr parsing fails.
+    """
     try:
         # txt verisini okumak için parçalar birleştirilip, işaret düzenlemeleri yapılıyor.
         combined = ";".join(raw_segments)

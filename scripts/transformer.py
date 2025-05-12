@@ -16,6 +16,16 @@ mapper_funcs = {
 
 
 def process_log(log_arr, config):
+    """
+    Transforms raw log data into structured key-value pairs using a configuration.
+    Args:
+        log_arr (list[int]): Raw log array from the device (e.g., [8, 12, 5]).
+        config (dict): Configuration defining how to interpret logArr (from JSON).
+    Returns:
+        dict: Processed data with keys defined in the config (e.g., {"SEND_REASON": "SERVICE_CALL"}).
+    Notes:
+        Skips keys if indexes exceed logArr bounds.
+    """
     result = {}
     for key, meta in config.items():
         info = meta["modelInfo"]
